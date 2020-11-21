@@ -10,7 +10,8 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/matiaspocai/sem-go-1/internal/config"
 	"github.com/matiaspocai/sem-go-1/internal/database"
-	"github.com/matiaspocai/sem-go-1/internal/service/chat"
+	//"github.com/matiaspocai/sem-go-1/internal/service/chat"
+	//"github.com/matiaspocai/sem-go-1/internal/service/vino"
 )
 
 func main() {
@@ -36,7 +37,7 @@ func main() {
 }
 
 func createSchema(db *sqlx.DB) error {
-	schema := `CREATE TABLE IF NOT EXISTS messages (
+	schema := `CREATE TABLE IF NOT EXISTS vinoteca (
 		id integer primary key autoincrement,
 		text varchar);`
 
@@ -47,7 +48,7 @@ func createSchema(db *sqlx.DB) error {
 	}
 
 	// or, you can use MustExec, which panics on error
-	insertMessage := `INSERT INTO messages (text) VALUES (?)`
+	insertMessage := `INSERT INTO vinoteca (text) VALUES (?)`
 	s := fmt.Sprintf("Message number %v", time.Now().Nanosecond())
 	db.MustExec(insertMessage, s)
 	return nil

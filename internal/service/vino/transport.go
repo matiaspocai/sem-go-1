@@ -35,13 +35,13 @@ func makeEndpoints(s Service) []*endpoint {
 
 	list = append(list, &endpoint{
 		method:   "GET",
-		path:     "/messages",
+		path:     "/vinos",
 		function: getAll(s),
 	})
 
 	list = append(list, &endpoint{
 		method:   "GET",
-		path:     "/messages/:id",
+		path:     "/vino/:id",
 		function: getByID(s),
 	})
 
@@ -51,7 +51,7 @@ func makeEndpoints(s Service) []*endpoint {
 func getAll(s Service) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
-			"messages": s.FindAll(),
+			"vinos": s.FindAll(),
 		})
 	}
 }
@@ -65,7 +65,7 @@ func getByID(s Service) gin.HandlerFunc {
 			os.Exit(1)
 		}
 		c.JSON(http.StatusOK, gin.H{
-			"messages": s.FindByID(i),
+			"vino": s.FindByID(i),
 		})
 	}
 }
