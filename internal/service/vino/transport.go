@@ -1,4 +1,4 @@
-package chat
+package vino
 
 import (
 	"fmt"
@@ -41,7 +41,7 @@ func makeEndpoints(s Service) []*endpoint {
 
 	list = append(list, &endpoint{
 		method:   "GET",
-		path:     "/vino/:id",
+		path:     "/vinos/:id",
 		function: getByID(s),
 	})
 
@@ -65,7 +65,7 @@ func getByID(s Service) gin.HandlerFunc {
 			os.Exit(1)
 		}
 		c.JSON(http.StatusOK, gin.H{
-			"vino": s.FindByID(i),
+			"vinos": s.FindByID(i),
 		})
 	}
 }

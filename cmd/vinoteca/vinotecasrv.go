@@ -10,8 +10,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/matiaspocai/sem-go-1/internal/config"
 	"github.com/matiaspocai/sem-go-1/internal/database"
-	//"github.com/matiaspocai/sem-go-1/internal/service/chat"
-	//"github.com/matiaspocai/sem-go-1/internal/service/vino"
+	"github.com/matiaspocai/sem-go-1/internal/service/vino"
 )
 
 func main() {
@@ -28,8 +27,8 @@ func main() {
 		os.Exit(1)
 	}
 
-	service, _ := chat.New(db, cfg)
-	httpService := chat.NewHTTPTransport(service)
+	service, _ := vino.New(db, cfg)
+	httpService := vino.NewHTTPTransport(service)
 
 	r := gin.Default()
 	httpService.Register(r)
