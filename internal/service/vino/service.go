@@ -34,7 +34,7 @@ func (s service) AddVino(m Vino) error {
 
 func (s service) FindByID(id int) []*Vino {
 	var m []*Vino
-	if err := s.db.Select(&m, "SELECT * FROM vinoteca where ID=$1", id); err != nil {
+	if err := s.db.Select(&m, "SELECT * FROM vinos where ID=$1", id); err != nil {
 		panic(err)
 	}
 	return m
@@ -42,7 +42,7 @@ func (s service) FindByID(id int) []*Vino {
 
 func (s service) FindAll() []*Vino {
 	var list []*Vino
-	if err := s.db.Select(&list, "SELECT * FROM vinoteca"); err != nil {
+	if err := s.db.Select(&list, "SELECT * FROM vinos"); err != nil {
 		panic(err)
 	}
 	return list

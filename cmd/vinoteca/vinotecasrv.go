@@ -36,7 +36,7 @@ func main() {
 }
 
 func createSchema(db *sqlx.DB) error {
-	schema := `CREATE TABLE IF NOT EXISTS vinoteca (
+	schema := `CREATE TABLE IF NOT EXISTS vinos (
 		id integer primary key autoincrement,
 		text varchar);`
 
@@ -47,7 +47,7 @@ func createSchema(db *sqlx.DB) error {
 	}
 
 	// or, you can use MustExec, which panics on error
-	insertMessage := `INSERT INTO vinoteca (text) VALUES (?)`
+	insertMessage := `INSERT INTO vinos (text) VALUES (?)`
 	s := fmt.Sprintf("Message number %v", time.Now().Nanosecond())
 	db.MustExec(insertMessage, s)
 	return nil
