@@ -2,7 +2,7 @@ package chat
 
 import (
 	"github.com/jmoiron/sqlx"
-	"github.com/juanpablopizarro/tudai-rest/internal/config"
+	"github.com/matiaspocai/sem-go-1/internal/config"
 )
 
 // Message ...

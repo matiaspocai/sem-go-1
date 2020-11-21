@@ -22,9 +22,8 @@ type GreeterConfig struct {
 
 // Config ...
 type Config struct {
-	DB      DbConfig      `yaml:"db"`
-	Version string        `yaml:"version"`
-	Greeter GreeterConfig `yaml:"greeter"`
+	DB      DbConfig `yaml:"db"`
+	Version string   `yaml:"version"`
 }
 
 // LoadConfig ...

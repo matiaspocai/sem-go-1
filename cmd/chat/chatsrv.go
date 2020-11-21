@@ -8,9 +8,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
-	"github.com/juanpablopizarro/tudai-rest/internal/config"
-	"github.com/juanpablopizarro/tudai-rest/internal/database"
-	"github.com/juanpablopizarro/tudai-rest/internal/service/chat"
+	"github.com/matiaspocai/sem-go-1/internal/config"
+	"github.com/matiaspocai/sem-go-1/internal/database"
+	"github.com/matiaspocai/sem-go-1/internal/service/chat"
 )
 
 func main() {
