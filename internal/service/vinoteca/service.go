@@ -1,11 +1,11 @@
-package vino
+package vinoteca
 
 import (
 	"github.com/jmoiron/sqlx"
 	"github.com/matiaspocai/sem-go-1/internal/config"
 )
 
-// Message ...
+// Vino ...
 type Vino struct {
 	ID   int
 	Text string

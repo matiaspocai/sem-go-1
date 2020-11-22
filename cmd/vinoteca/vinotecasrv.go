@@ -10,7 +10,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/matiaspocai/sem-go-1/internal/config"
 	"github.com/matiaspocai/sem-go-1/internal/database"
-	"github.com/matiaspocai/sem-go-1/internal/service/vino"
+	"github.com/matiaspocai/sem-go-1/internal/service/vinoteca"
 )
 
 func main() {
@@ -27,14 +27,17 @@ func main() {
 		os.Exit(1)
 	}
 
-	service, _ := vino.New(db, cfg)
-	httpService := vino.NewHTTPTransport(service)
+	service, _ := vinoteca.New(db, cfg)
+	httpService := vinoteca.NewHTTPTransport(service)
+
+	// createSchema(db)
 
 	r := gin.Default()
 	httpService.Register(r)
 	r.Run()
 }
 
+// agregar createSchema(db) para crear tabla/base de datos
 func createSchema(db *sqlx.DB) error {
 	schema := `CREATE TABLE IF NOT EXISTS vinos (
 		id integer primary key autoincrement,

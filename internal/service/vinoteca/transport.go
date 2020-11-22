@@ -1,4 +1,4 @@
-package vino
+package vinoteca
 
 import (
 	"fmt"
