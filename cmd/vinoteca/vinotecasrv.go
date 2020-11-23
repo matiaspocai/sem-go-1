@@ -30,7 +30,7 @@ func main() {
 	service, _ := vinoteca.New(db, cfg)
 	httpService := vinoteca.NewHTTPTransport(service)
 
-	// createSchema(db)
+	// createSchema(db) : ejecutar para crear tabla por primera vez
 
 	r := gin.Default()
 	httpService.Register(r)

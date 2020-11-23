@@ -45,6 +45,18 @@ func makeEndpoints(s Service) []*endpoint {
 		function: getByID(s),
 	})
 
+	/* list = append(list, &endpoint{
+		method: "POST",
+		path:   "/postvino/",
+		function: postVino(s),
+	}) */
+
+	list = append(list, &endpoint{
+		method:   "DELETE",
+		path:     "/deletevino/:id",
+		function: deleteVino(s),
+	})
+
 	return list
 }
 
@@ -66,6 +78,29 @@ func getByID(s Service) gin.HandlerFunc {
 		}
 		c.JSON(http.StatusOK, gin.H{
 			"vinos": s.FindByID(i),
+		})
+	}
+}
+
+/*
+func postVino(s Service) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"vinos": s.PostVino(c),
+		})
+	}
+} */
+
+func deleteVino(s Service) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		id := c.Param("id")
+		i, err := strconv.Atoi(id)
+		if err != nil {
+			fmt.Println(err.Error())
+			os.Exit(1)
+		}
+		c.JSON(http.StatusOK, gin.H{
+			"vinos": s.DeleteVino(i),
 		})
 	}
 }
