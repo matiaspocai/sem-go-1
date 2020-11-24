@@ -4,7 +4,6 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
@@ -30,7 +29,7 @@ func main() {
 	service, _ := vinoteca.New(db, cfg)
 	httpService := vinoteca.NewHTTPTransport(service)
 
-	// createSchema(db) : ejecutar para crear tabla por primera vez
+	// createSchema(db)
 
 	r := gin.Default()
 	httpService.Register(r)
@@ -39,9 +38,12 @@ func main() {
 
 // agregar createSchema(db) para crear tabla/base de datos
 func createSchema(db *sqlx.DB) error {
-	schema := `CREATE TABLE IF NOT EXISTS vinos (
+	schema := `CREATE TABLE IF NOT EXISTS vinoteca (
 		id integer primary key autoincrement,
-		text varchar);`
+		nombre varchar, 
+		marca varchar,
+		varietal varchar,
+		precio int);`
 
 	// execute a query on the server
 	_, err := db.Exec(schema)
@@ -50,8 +52,11 @@ func createSchema(db *sqlx.DB) error {
 	}
 
 	// or, you can use MustExec, which panics on error
-	insertMessage := `INSERT INTO vinos (text) VALUES (?)`
-	s := fmt.Sprintf("Message number %v", time.Now().Nanosecond())
-	db.MustExec(insertMessage, s)
+	insertMessage := `INSERT INTO vinoteca (nombre, marca, varietal, precio) VALUES (?,?,?,?)`
+	n := "Libre"
+	m := "Style"
+	v := "Cabernet"
+	p := 175
+	db.MustExec(insertMessage, n, m, v, p)
 	return nil
 }

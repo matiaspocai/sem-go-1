@@ -10,8 +10,11 @@ import (
 
 // Vino ...
 type Vino struct {
-	ID   int    `json:"ID"`
-	Text string `json:"Text"`
+	ID       int    `json:"ID"`
+	Nombre   string `json:"Nombre"`
+	Marca    string `json:"Marca`
+	Varietal string `json:"Varietal"`
+	Precio   int    `json:"Precio"`
 }
 
 // Service ...
@@ -35,7 +38,7 @@ func New(db *sqlx.DB, c *config.Config) (Service, error) {
 // FindByID busca por ide
 func (s service) FindByID(id int) []*Vino {
 	var m []*Vino
-	if err := s.db.Select(&m, "SELECT * FROM vinos where ID=$1", id); err != nil {
+	if err := s.db.Select(&m, "SELECT * FROM vinoteca where ID=$1", id); err != nil {
 		fmt.Println(err.Error())
 		os.Exit(1)
 	}
@@ -45,7 +48,7 @@ func (s service) FindByID(id int) []*Vino {
 // FindAll trae todos los vinos
 func (s service) FindAll() []*Vino {
 	var list []*Vino
-	if err := s.db.Select(&list, "SELECT * FROM vinos"); err != nil {
+	if err := s.db.Select(&list, "SELECT * FROM vinoteca"); err != nil {
 		fmt.Println(err.Error())
 		os.Exit(1)
 	}
@@ -55,7 +58,7 @@ func (s service) FindAll() []*Vino {
 // PostVino crea un vino
 func (s service) PostVino(t string) []*Vino {
 	var m []*Vino
-	res := "INSERT INTO vinos (text) VALUES (?)"
+	res := "INSERT INTO vinoteca (nombre) VALUES (?)"
 	s.db.MustExec(res, t)
 	return m
 }
@@ -63,7 +66,7 @@ func (s service) PostVino(t string) []*Vino {
 // DeleteVino elimina vino por id...
 func (s service) DeleteVino(id int) []*Vino {
 	var m []*Vino
-	if err := s.db.Select(&m, "DELETE FROM vinos where ID=$1", id); err != nil {
+	if err := s.db.Select(&m, "DELETE FROM vinoteca where ID=$1", id); err != nil {
 		fmt.Println(err.Error())
 		os.Exit(1)
 	}
