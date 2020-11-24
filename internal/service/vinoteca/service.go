@@ -12,7 +12,7 @@ import (
 type Vino struct {
 	ID       int    `json:"ID"`
 	Nombre   string `json:"Nombre"`
-	Marca    string `json:"Marca`
+	Marca    string `json:"Marca"`
 	Varietal string `json:"Varietal"`
 	Precio   int    `json:"Precio"`
 }
@@ -22,7 +22,7 @@ type Service interface {
 	FindAll() []*Vino
 	FindByID(int) []*Vino
 	DeleteVino(int) []*Vino
-	PostVino(string) []*Vino
+	PostVino(Vino) []*Vino
 }
 
 type service struct {
@@ -56,11 +56,11 @@ func (s service) FindAll() []*Vino {
 }
 
 // PostVino crea un vino
-func (s service) PostVino(t string) []*Vino {
-	var m []*Vino
-	res := "INSERT INTO vinoteca (nombre) VALUES (?)"
-	s.db.MustExec(res, t)
-	return m
+func (s service) PostVino(v Vino) []*Vino {
+	var mv []*Vino
+	res := "INSERT INTO vinoteca (nombre, marca, varietal, precio) VALUES (?,?,?,?)"
+	s.db.MustExec(res, v.Nombre, v.Marca, v.Varietal, v.Precio)
+	return mv
 }
 
 // DeleteVino elimina vino por id...

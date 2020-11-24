@@ -93,7 +93,7 @@ func postVino(s Service) gin.HandlerFunc {
 		fmt.Println("Imprimiendo variable: ", vino)
 
 		c.JSON(http.StatusOK, gin.H{
-			"vinos": s.PostVino(vino.Nombre),
+			"vinos": s.PostVino(vino),
 		})
 	}
 }

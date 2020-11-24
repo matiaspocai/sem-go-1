@@ -30,10 +30,17 @@ func main() {
 	httpService := vinoteca.NewHTTPTransport(service)
 
 	// createSchema(db)
+	// eliminarTabla(db)
 
 	r := gin.Default()
 	httpService.Register(r)
 	r.Run()
+}
+
+func eliminarTabla(db *sqlx.DB) error {
+	res := `DROP TABLE vinoteca`
+	db.MustExec(res)
+	return nil
 }
 
 // agregar createSchema(db) para crear tabla/base de datos
@@ -43,7 +50,8 @@ func createSchema(db *sqlx.DB) error {
 		nombre varchar, 
 		marca varchar,
 		varietal varchar,
-		precio int);`
+		precio int
+		);`
 
 	// execute a query on the server
 	_, err := db.Exec(schema)
@@ -52,11 +60,11 @@ func createSchema(db *sqlx.DB) error {
 	}
 
 	// or, you can use MustExec, which panics on error
-	insertMessage := `INSERT INTO vinoteca (nombre, marca, varietal, precio) VALUES (?,?,?,?)`
-	n := "Libre"
+	res := `INSERT INTO vinoteca (nombre, marca, varietal, precio) VALUES (?,?,?,?)`
+	n := "Elastic"
 	m := "Style"
-	v := "Cabernet"
-	p := 175
-	db.MustExec(insertMessage, n, m, v, p)
+	v := "Malbec"
+	p := 210
+	db.MustExec(res, n, m, v, p)
 	return nil
 }
