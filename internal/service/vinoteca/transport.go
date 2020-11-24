@@ -58,6 +58,12 @@ func makeEndpoints(s Service) []*endpoint {
 		function: deleteVino(s),
 	})
 
+	list = append(list, &endpoint{
+		method:   "PUT",
+		path:     "/putvino/:id",
+		function: putVino(s),
+	})
+
 	return list
 }
 
@@ -94,6 +100,27 @@ func postVino(s Service) gin.HandlerFunc {
 
 		c.JSON(http.StatusOK, gin.H{
 			"vinos": s.PostVino(vino),
+		})
+	}
+}
+
+func putVino(s Service) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		id := c.Param("id")
+		i, err := strconv.Atoi(id)
+		if err != nil {
+			fmt.Println(err.Error())
+			os.Exit(1)
+		}
+		var vino Vino
+		erro := c.BindJSON(&vino)
+		if erro != nil {
+			log.Fatal(erro)
+		}
+		fmt.Println("Imprimiendo variable: ", vino)
+
+		c.JSON(http.StatusOK, gin.H{
+			"vinos": s.PutVino(i, vino),
 		})
 	}
 }

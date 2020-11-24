@@ -23,6 +23,7 @@ type Service interface {
 	FindByID(int) []*Vino
 	DeleteVino(int) []*Vino
 	PostVino(Vino) []*Vino
+	PutVino(int, Vino) []*Vino
 }
 
 type service struct {
@@ -59,6 +60,14 @@ func (s service) FindAll() []*Vino {
 func (s service) PostVino(v Vino) []*Vino {
 	var mv []*Vino
 	res := "INSERT INTO vinoteca (nombre, marca, varietal, precio) VALUES (?,?,?,?)"
+	s.db.MustExec(res, v.Nombre, v.Marca, v.Varietal, v.Precio)
+	return mv
+}
+
+// PutVino ...
+func (s service) PutVino(id int, v Vino) []*Vino {
+	var mv []*Vino
+	res := "UPDATE vinoteca SET nombre = ?, marca = ?, varietal = ?, precio = ? WHERE ID=id"
 	s.db.MustExec(res, v.Nombre, v.Marca, v.Varietal, v.Precio)
 	return mv
 }
