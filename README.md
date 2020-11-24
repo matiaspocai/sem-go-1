@@ -1,9 +1,9 @@
-# Api Golang con GinGonic
-### Seminario Golang, Tudai, Exactas Unicen. Noviembre 2020.
-### Refactorización sobre modelo de Juan Pablo Pizarro.
+# Api Golang con Gin-Gonic
+#### Seminario Golang, Tudai, Exactas Unicen. Noviembre 2020.
+#### Refactorización sobre modelo de Juan Pablo Pizarro.
 ## Correr api: 
 go run cmd/vinoteca/vinotecasrv.go -config ./config/config.yaml
-## Servidor: localhost:8080
+Servidor: localhost:8080
 ## Rutas:
 Get: vinos (trae colección de productos)
 Get por ID: vinos/:id (trae producto por identificador único)
