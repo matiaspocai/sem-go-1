@@ -2,6 +2,7 @@ package vinoteca
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"strconv"
@@ -45,11 +46,11 @@ func makeEndpoints(s Service) []*endpoint {
 		function: getByID(s),
 	})
 
-	/* list = append(list, &endpoint{
-		method: "POST",
-		path:   "/postvino/",
+	list = append(list, &endpoint{
+		method:   "POST",
+		path:     "/postvino/",
 		function: postVino(s),
-	}) */
+	})
 
 	list = append(list, &endpoint{
 		method:   "DELETE",
@@ -82,14 +83,20 @@ func getByID(s Service) gin.HandlerFunc {
 	}
 }
 
-/*
 func postVino(s Service) gin.HandlerFunc {
 	return func(c *gin.Context) {
+		var vino Vino
+		err := c.BindJSON(&vino)
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println("Imprimiendo variable: ", vino)
+
 		c.JSON(http.StatusOK, gin.H{
-			"vinos": s.PostVino(c),
+			"vinos": s.PostVino(vino.Text),
 		})
 	}
-} */
+}
 
 func deleteVino(s Service) gin.HandlerFunc {
 	return func(c *gin.Context) {
