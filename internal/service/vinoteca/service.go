@@ -22,7 +22,7 @@ type Service interface {
 	FindAll() []*Vino
 	FindByID(int) []*Vino
 	DeleteVino(int) []*Vino
-	PostVino(Vino) []*Vino
+	PostVino(Vino) string
 	PutVino(int, Vino) []*Vino
 }
 
@@ -31,22 +31,12 @@ type service struct {
 	conf *config.Config
 }
 
-// New ...
+// New sqlx más configuración ...
 func New(db *sqlx.DB, c *config.Config) (Service, error) {
 	return service{db, c}, nil
 }
 
-// FindByID busca por ide
-func (s service) FindByID(id int) []*Vino {
-	var m []*Vino
-	if err := s.db.Select(&m, "SELECT * FROM vinoteca where ID=$1", id); err != nil {
-		fmt.Println(err.Error())
-		os.Exit(1)
-	}
-	return m
-}
-
-// FindAll trae todos los vinos
+// FindAll retorna la Lista de productos, vinos
 func (s service) FindAll() []*Vino {
 	var list []*Vino
 	if err := s.db.Select(&list, "SELECT * FROM vinoteca"); err != nil {
@@ -56,28 +46,39 @@ func (s service) FindAll() []*Vino {
 	return list
 }
 
-// PostVino crea un vino
-func (s service) PostVino(v Vino) []*Vino {
-	var mv []*Vino
-	res := "INSERT INTO vinoteca (nombre, marca, varietal, precio) VALUES (?,?,?,?)"
-	s.db.MustExec(res, v.Nombre, v.Marca, v.Varietal, v.Precio)
-	return mv
-}
-
-// PutVino ...
-func (s service) PutVino(id int, v Vino) []*Vino {
-	var mv []*Vino
-	res := "UPDATE vinoteca SET nombre = ?, marca = ?, varietal = ?, precio = ? WHERE ID=id"
-	s.db.MustExec(res, v.Nombre, v.Marca, v.Varietal, v.Precio)
-	return mv
-}
-
-// DeleteVino elimina vino por id...
-func (s service) DeleteVino(id int) []*Vino {
-	var m []*Vino
-	if err := s.db.Select(&m, "DELETE FROM vinoteca where ID=$1", id); err != nil {
+// FindByID busca y devuelve producto por identificador
+func (s service) FindByID(id int) []*Vino {
+	var vino []*Vino
+	if err := s.db.Select(&vino, "SELECT * FROM vinoteca where ID=$1", id); err != nil {
 		fmt.Println(err.Error())
 		os.Exit(1)
 	}
-	return m
+	return vino
+}
+
+// DeleteVino elimina vino por id y retorna Lista de Vinos después de la sustracción
+func (s service) DeleteVino(id int) []*Vino {
+	var v []*Vino
+	if err := s.db.Select(&v, "DELETE FROM vinoteca where ID=$1", id); err != nil {
+		fmt.Println(err.Error())
+		fmt.Println(v)
+		os.Exit(1)
+	}
+	list := s.FindAll()
+	return list
+}
+
+// PostVino crea producto (vino) y devuelve un mensaje
+func (s service) PostVino(v Vino) string {
+	res := "INSERT INTO vinoteca (nombre, marca, varietal, precio) VALUES (?,?,?,?)"
+	s.db.MustExec(res, v.Nombre, v.Marca, v.Varietal, v.Precio)
+	return "La inserción fue un éxito!"
+}
+
+// PutVino, edita productos por id y devuelve la lista actualizada
+func (s service) PutVino(id int, v Vino) []*Vino {
+	res := "UPDATE vinoteca SET nombre = ?, marca = ?, varietal = ?, precio = ? WHERE ID=id"
+	s.db.MustExec(res, v.Nombre, v.Marca, v.Varietal, v.Precio)
+	list := s.FindAll()
+	return list
 }

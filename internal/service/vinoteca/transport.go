@@ -31,6 +31,7 @@ func NewHTTPTransport(s Service) HTTPService {
 	return httpService{endpoints}
 }
 
+//Lista de endpoinst
 func makeEndpoints(s Service) []*endpoint {
 	list := []*endpoint{}
 
@@ -80,6 +81,7 @@ func getByID(s Service) gin.HandlerFunc {
 		id := c.Param("id")
 		i, err := strconv.Atoi(id)
 		if err != nil {
+			fmt.Println("Debe pasar como parámetro un número de id válido")
 			fmt.Println(err.Error())
 			os.Exit(1)
 		}
@@ -96,7 +98,6 @@ func postVino(s Service) gin.HandlerFunc {
 		if err != nil {
 			log.Fatal(err)
 		}
-		fmt.Println("Imprimiendo variable: ", vino)
 
 		c.JSON(http.StatusOK, gin.H{
 			"vinos": s.PostVino(vino),
