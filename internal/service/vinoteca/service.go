@@ -20,10 +20,10 @@ type Vino struct {
 // Service ...
 type Service interface {
 	FindAll() []*Vino
-	FindByID(int) []*Vino
-	DeleteVino(int) []*Vino
+	FindByID(int) *Vino
+	DeleteVino(int) string
 	PostVino(Vino) string
-	PutVino(int, Vino) []*Vino
+	PutVino(int, Vino) string
 }
 
 type service struct {
@@ -47,25 +47,23 @@ func (s service) FindAll() []*Vino {
 }
 
 // FindByID busca y devuelve producto por identificador
-func (s service) FindByID(id int) []*Vino {
-	var vino []*Vino
-	if err := s.db.Select(&vino, "SELECT * FROM vinoteca where ID=$1", id); err != nil {
+func (s service) FindByID(id int) *Vino {
+	var v Vino
+	if err := s.db.Get(&v, "SELECT * FROM vinoteca where ID=$1", id); err != nil {
 		fmt.Println(err.Error())
 		os.Exit(1)
 	}
-	return vino
+	return &v
 }
 
-// DeleteVino elimina vino por id y retorna Lista de Vinos después de la sustracción
-func (s service) DeleteVino(id int) []*Vino {
-	var v []*Vino
-	if err := s.db.Select(&v, "DELETE FROM vinoteca where ID=$1", id); err != nil {
-		fmt.Println(err.Error())
-		fmt.Println(v)
+// DeleteVino elimina vino por id y retorna un string...
+func (s service) DeleteVino(id int) string {
+	var str string
+	if err := s.db.MustExec("DELETE FROM vinoteca where ID=$1", id); err != nil {
+		fmt.Println(err)
 		os.Exit(1)
 	}
-	list := s.FindAll()
-	return list
+	return str
 }
 
 // PostVino crea producto (vino) y devuelve un mensaje
@@ -76,9 +74,8 @@ func (s service) PostVino(v Vino) string {
 }
 
 // PutVino, edita productos por id y devuelve la lista actualizada
-func (s service) PutVino(id int, v Vino) []*Vino {
+func (s service) PutVino(id int, v Vino) string {
 	res := "UPDATE vinoteca SET nombre = ?, marca = ?, varietal = ?, precio = ? WHERE ID=id"
 	s.db.MustExec(res, v.Nombre, v.Marca, v.Varietal, v.Precio)
-	list := s.FindAll()
-	return list
+	return "Producto editado con éxito."
 }

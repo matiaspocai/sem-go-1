@@ -86,7 +86,7 @@ func getByID(s Service) gin.HandlerFunc {
 			os.Exit(1)
 		}
 		c.JSON(http.StatusOK, gin.H{
-			"vinos": s.FindByID(i),
+			"vino": s.FindByID(i),
 		})
 	}
 }
@@ -121,7 +121,7 @@ func putVino(s Service) gin.HandlerFunc {
 		fmt.Println("Imprimiendo variable: ", vino)
 
 		c.JSON(http.StatusOK, gin.H{
-			"vinos": s.PutVino(i, vino),
+			"": s.PutVino(i, vino),
 		})
 	}
 }
