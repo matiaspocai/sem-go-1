@@ -2,7 +2,6 @@ package vinoteca
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/jmoiron/sqlx"
 	"github.com/matiaspocai/sem-go-1/internal/config"
@@ -41,7 +40,6 @@ func (s service) FindAll() []*Vino {
 	var list []*Vino
 	if err := s.db.Select(&list, "SELECT * FROM vinoteca"); err != nil {
 		fmt.Println(err.Error())
-		os.Exit(1)
 	}
 	return list
 }
@@ -51,7 +49,6 @@ func (s service) FindByID(id int) *Vino {
 	var v Vino
 	if err := s.db.Get(&v, "SELECT * FROM vinoteca where ID=$1", id); err != nil {
 		fmt.Println(err.Error())
-		os.Exit(1)
 	}
 	return &v
 }
@@ -60,7 +57,6 @@ func (s service) FindByID(id int) *Vino {
 func (s service) DeleteVino(id int) error {
 	if err := s.db.MustExec("DELETE FROM vinoteca where ID=$1", id); err != nil {
 		fmt.Println(err)
-		os.Exit(1)
 	}
 	return nil
 }

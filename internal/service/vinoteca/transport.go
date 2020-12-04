@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -83,7 +82,6 @@ func getByID(s Service) gin.HandlerFunc {
 		if err != nil {
 			fmt.Println("Debe pasar como parámetro un número de id válido")
 			fmt.Println(err.Error())
-			os.Exit(1)
 		}
 		c.JSON(http.StatusOK, gin.H{
 			"vino": s.FindByID(i),
@@ -111,7 +109,6 @@ func putVino(s Service) gin.HandlerFunc {
 		i, err := strconv.Atoi(id)
 		if err != nil {
 			fmt.Println(err.Error())
-			os.Exit(1)
 		}
 		var vino Vino
 		erro := c.BindJSON(&vino)
@@ -132,10 +129,9 @@ func deleteVino(s Service) gin.HandlerFunc {
 		i, err := strconv.Atoi(id)
 		if err != nil {
 			fmt.Println(err.Error())
-			os.Exit(1)
 		}
 		c.JSON(http.StatusOK, gin.H{
-			"vinos": s.DeleteVino(i),
+			"delete": s.DeleteVino(i),
 		})
 	}
 }
