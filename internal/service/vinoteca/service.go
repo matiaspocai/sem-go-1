@@ -21,7 +21,7 @@ type Vino struct {
 type Service interface {
 	FindAll() []*Vino
 	FindByID(int) *Vino
-	DeleteVino(int) string
+	DeleteVino(int) error
 	PostVino(Vino) string
 	PutVino(int, Vino) string
 }
@@ -56,14 +56,13 @@ func (s service) FindByID(id int) *Vino {
 	return &v
 }
 
-// DeleteVino elimina vino por id y retorna un string...
-func (s service) DeleteVino(id int) string {
-	var str string
+// DeleteVino elimina vino por id y retorna un error...
+func (s service) DeleteVino(id int) error {
 	if err := s.db.MustExec("DELETE FROM vinoteca where ID=$1", id); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	return str
+	return nil
 }
 
 // PostVino crea producto (vino) y devuelve un mensaje
